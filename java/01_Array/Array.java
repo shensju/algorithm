@@ -2,22 +2,22 @@
  * @Author: shensju
  * @Date: 2021/1/27 22:58
  */
-public class Array {
+public class Array<E> {
 
-    private int[] data;
+    private E[] data;
     private int size;
 
     /**
-     * 有参构造函数，传入数组的容量capacity，构造数组
-     * @param capacity  申请的数组容量
+     * 构造一个容量为capacity的数组
+     * @param capacity
      */
     public Array(int capacity) {
-        data = new int[capacity];
+        data = (E[]) new Object[capacity];
         size = 0;
     }
 
     /**
-     * 无参构造函数，默认构造一个容量为10的数组
+     * 默认构造一个容量为10的数组
      */
     public Array() {
         this(10);
@@ -25,7 +25,7 @@ public class Array {
 
     /**
      * 获取数组的元素个数
-     * @return  数组的元素个数
+     * @return
      */
     public int getSize() {
         return size;
@@ -33,7 +33,7 @@ public class Array {
 
     /**
      * 获取数组的容量
-     * @return  数组的容量
+     * @return
      */
     public int getCapacity() {
         return data.length;
@@ -41,34 +41,18 @@ public class Array {
 
     /**
      * 判断数组是否为空
-     * @return  true表示为空，false表示非空
+     * @return
      */
     public boolean isEmpty() {
         return size == 0;
     }
 
     /**
-     * 在数组的所有元素后面添加新元素
-     * @param e  需要添加的元素
-     */
-    public void addLast(int e) {
-        add(size, e);
-    }
-
-    /**
-     * 在数组的所有元素前面添加新元素
-     * @param e  需要添加的元素
-     */
-    public void addFirst(int e) {
-        add(0, e);
-    }
-
-    /**
      * 在index索引位置上插入一个新元素
-     * @param index  要插入的数组位置
-     * @param e  需要添加的元素
+     * @param index
+     * @param e
      */
-    public void add(int index, int e) {
+    public void add(int index, E e) {
         if (size == data.length)
             throw new IllegalArgumentException("Add failed. Array is full.");
         if (index < 0 || index > size)
@@ -80,11 +64,27 @@ public class Array {
     }
 
     /**
+     * 在数组的所有元素后面添加新元素
+     * @param e
+     */
+    public void addLast(E e) {
+        add(size, e);
+    }
+
+    /**
+     * 在数组的所有元素前面添加新元素
+     * @param e
+     */
+    public void addFirst(E e) {
+        add(0, e);
+    }
+
+    /**
      * 获取index索引位置的元素
      * @param index
      * @return
      */
-    public int get(int index) {
+    public E get(int index) {
         if (index < 0 || index >= size)
             throw new IllegalArgumentException("Get failed. Index is illegal.");
         return data[index];
@@ -95,10 +95,78 @@ public class Array {
      * @param index
      * @param e
      */
-    public void set(int index, int e) {
+    public void set(int index, E e) {
         if (index < 0 || index >= size)
             throw new IllegalArgumentException("Set failed. Index is illegal.");
         data[index] = e;
+    }
+
+    /**
+     * 查找数组中是否有元素e
+     * @param e
+     * @return
+     */
+    public boolean contains(E e) {
+        for (int i = 0; i < size; i++) {
+            if (data[i].equals(e))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * 查找元素e在数组中的索引，如果不存在，则返回-1
+     * @param e
+     * @return
+     */
+    public int find(E e) {
+        for (int i = 0; i < size; i++) {
+            if (data[i].equals(e))
+                return i;
+        }
+        return -1;
+    }
+
+    /**
+     * 从数组中删除index位置的元素，返回被删除的元素
+     * @param index
+     * @return
+     */
+    public E remove(int index) {
+        if (index < 0 || index >= size)
+            throw new IllegalArgumentException("Remove failed. Index is illegal.");
+        E returnData = data[index];
+        for (int i = index + 1; i < size; i++)
+            data[i - 1] = data[i];
+        size--;
+        data[size] = null; // loitering objects != memory leak
+        return returnData;
+    }
+
+    /**
+     * 从数组中删除第一个元素，返回被删除的元素
+     * @return
+     */
+    public E removeFirst() {
+        return remove(0);
+    }
+
+    /**
+     * 从数组中删除最后一个元素，返回被删除的元素
+     * @return
+     */
+    public E removeLast() {
+        return remove(size - 1);
+    }
+
+    /**
+     * 从数组中删除元素e，如果有多个元素，只删除索引位置最前面的元素
+     * @param e
+     */
+    public void removeElement(E e) {
+        int index = find(e);
+        if (index != -1)
+            remove(index);
     }
 
     @Override
@@ -114,6 +182,4 @@ public class Array {
         result.append("]");
         return result.toString();
     }
-
-
 }
