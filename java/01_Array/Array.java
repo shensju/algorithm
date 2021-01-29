@@ -1,3 +1,5 @@
+package com.shensju.array;
+
 /**
  * @Author: shensju
  * @Date: 2021/1/27 22:58
@@ -53,10 +55,10 @@ public class Array<E> {
      * @param e
      */
     public void add(int index, E e) {
-        if (size == data.length)
-            throw new IllegalArgumentException("Add failed. Array is full.");
         if (index < 0 || index > size)
             throw new IllegalArgumentException("Add failed. Require index >= 0 and index <= size.");
+        if (size == data.length)
+            resize(2 * data.length);
         for (int i = size - 1; i >= index; i--)
             data[i + 1] = data[i];
         data[index] = e;
@@ -115,7 +117,7 @@ public class Array<E> {
     }
 
     /**
-     * 查找元素e在数组中的索引，如果不存在，则返回-1
+     * 查找元素e在数组中的索引，如果有多个元素e，返回最前面元素的索引位置；如果不存在，则返回-1
      * @param e
      * @return
      */
@@ -140,6 +142,9 @@ public class Array<E> {
             data[i - 1] = data[i];
         size--;
         data[size] = null; // loitering objects != memory leak
+
+        if (size == data.length / 2)
+            resize(data.length / 2);
         return returnData;
     }
 
@@ -181,5 +186,16 @@ public class Array<E> {
         }
         result.append("]");
         return result.toString();
+    }
+
+    /**
+     * 动态调整数组的容量大小
+     * @param newCapacity
+     */
+    private void resize(int newCapacity) {
+        E[] newData = (E[]) new Object[newCapacity];
+        for (int i = 0; i < size; i++)
+            newData[i] = data[i];
+        data = newData;
     }
 }
