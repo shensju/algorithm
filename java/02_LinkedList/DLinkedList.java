@@ -139,7 +139,7 @@ public class DLinkedList<E> {
      * @param e
      * @param succ
      */
-    public void linkBefore(E e, Node<E> succ) {
+    private void linkBefore(E e, Node<E> succ) {
         Node<E> p = succ.prev;
         Node<E> newNode = new Node<>(p, e, succ);
         succ.prev = newNode;
@@ -171,6 +171,208 @@ public class DLinkedList<E> {
         }
     }
 
+    /**
+     * 删除第index个位置的结点，返回被删除结点的值
+     * @param index
+     * @return
+     */
+    public E remove(int index) {
+        if (index < 0 || index >= size)
+            throw new IllegalArgumentException("Remove failed. Illegal index.");
+        return unlink(node(index));
+    }
+
+    /**
+     * 默认从链表的开头删除结点，返回被删除结点的值
+     * @return
+     */
+    public E remove() {
+        return removeFirst();
+    }
+
+    /**
+     * 删除链表的首结点，返回被删除结点的值
+     * @return
+     */
+    public E removeFirst() {
+        Node<E> f = first;
+        if (f == null)
+            throw new IllegalArgumentException("Remove failed. First node is null.");
+        return unlinkFirst(f);
+    }
+
+    /**
+     * 删除链表的尾结点，返回被删除结点的值
+     * @return
+     */
+    public E removeLast() {
+        Node<E> l = last;
+        if (l == null)
+            throw new IllegalArgumentException("Remove failed. Last node is null.");
+        return unlinkLast(l);
+    }
+
+    /**
+     * 删除链表的指定结点，返回被删除结点的值
+     * @param x
+     * @return
+     */
+    private E unlink(Node<E> x) {
+        E e = x.data;
+        Node<E> next = x.next;
+        Node<E> prev = x.prev;
+        if (prev == null) {
+            first = next;
+        } else {
+            prev.next = next;
+            x.prev = null;
+        }
+        if (next == null) {
+            last = prev;
+        } else {
+            next.prev = prev;
+            x.next = null;
+        }
+        x.data = null;
+        size--;
+        return e;
+    }
+
+    /**
+     * 删除链表的首结点，返回被删除结点的值
+     * @param f
+     * @return
+     */
+    private E unlinkFirst(Node<E> f) {
+        E e = f.data;
+        Node<E> next = f.next;
+        f.data = null;
+        f.next = null;
+        first = next;
+        if (next == null)
+            last = null;
+        else
+            next.prev = null;
+        size--;
+        return e;
+    }
+
+    /**
+     * 删除链表的尾结点，返回被删除结点的值
+     * @param l
+     * @return
+     */
+    private E unlinkLast(Node<E> l) {
+        E e = l.data;
+        Node<E> prev = l.prev;
+        l.data = null;
+        l.prev = null;
+        last = prev;
+        if (prev == null)
+            first = null;
+        else
+            prev.next = null;
+        size--;
+        return e;
+    }
+
+    /**
+     * 获取链表第index个位置的结点的值
+     * @param index
+     * @return
+     */
+    public E get(int index) {
+        if (index < 0 || index >= size)
+            throw new IllegalArgumentException("Get failed. Illegal index.");
+        return node(index).data;
+    }
+
+    /**
+     * 获取链表首结点的值
+     * @return
+     */
+    public E getFirst() {
+        Node<E> f = first;
+        if (f == null)
+            throw new IllegalArgumentException("Get failed. First node is not existed.");
+        return f.data;
+    }
+
+    /**
+     * 获取链表尾结点的值
+     * @return
+     */
+    public E getLast() {
+        Node<E> l = last;
+        if (l == null)
+            throw new IllegalArgumentException("Get failed. Last node is not existed.");
+        return l.data;
+    }
+
+    /**
+     * 查找链表中是否存在值为e的结点，若存在返回true，否则返回false
+     * @param e
+     * @return
+     */
+    public boolean contains(E e) {
+        return find(e) != -1;
+    }
+
+    /**
+     * 查找链表中是否存在值为e的结点，若存在返回结点的索引位置，否则返回-1
+     * @param e
+     * @return
+     */
+    public int find(E e) {
+        int index = 0;
+        if (e == null) {
+            for (Node<E> cur = first; cur != null; cur = cur.next) {
+                if (cur.data == null)
+                    return index;
+                index++;
+            }
+        } else {
+            for (Node<E> cur = first; cur != null; cur = cur.next) {
+                if (e.equals(cur.data))
+                    return index;
+                index++;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 修改链表第index个位置的结点的值为e，返回结点的旧值
+     * @param index
+     * @param e
+     * @return
+     */
+    public E set(int index, E e) {
+        if (index < 0 || index >= size)
+            throw new IllegalArgumentException("Set failed. Illegal index.");
+        Node<E> target = node(index);
+        E oldValue = target.data;
+        target.data = e;
+        return oldValue;
+    }
+
+    /**
+     * 清空链表
+     */
+    public void clear() {
+        for (Node<E> cur = first; cur != null;) {
+            Node<E> next = cur.next;
+            cur.data = null;
+            cur.next = null;
+            if (next != null)
+                next.prev = null;
+            cur = next;
+        }
+        first = null;
+        last = null;
+        size = 0;
+    }
+
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
@@ -181,19 +383,5 @@ public class DLinkedList<E> {
         }
         res.append("NULL");
         return res.toString();
-    }
-
-    public static void main(String[] args) {
-        DLinkedList<Integer> list = new DLinkedList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add(i);
-            System.out.println(list);
-        }
-        list.add(0, 10);
-        System.out.println(list);
-        list.add(6, 11);
-        System.out.println(list);
-        list.add(3, 20);
-        System.out.println(list);
     }
 }
