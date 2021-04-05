@@ -28,8 +28,8 @@ Status InitStack(SqStack *S) {
 
 /* 把S置为空栈 */
 Status ClearStack(SqStack *S) {
-	S -> top = -1;
-	return OK;
+    S -> top = -1;
+    return OK;
 }
 
 /* 若栈S为空栈，则返回TRUE，否则返回FALSE */
@@ -42,8 +42,9 @@ Status StackEmpty(SqStack S) {
 
 /* 返回S的元素个数，即栈的长度 */
 int StackLength(SqStack S) {
-	return S.top + 1;
+    return S.top + 1;
 }
+
 /* 若栈不空，则用e返回S的栈顶元素，并返回OK；否则返回ERROR */
 Status GetTop(SqStack S, SElemType *e) {
     if (S.top == -1)
@@ -55,7 +56,7 @@ Status GetTop(SqStack S, SElemType *e) {
 
 /* 插入元素e为新的栈顶元素 */
 Status Push(SqStack *S, SElemType e) {
-    if(S -> top == MAXSIZE -1) {  /* 栈满 */
+    if(S -> top == MAXSIZE - 1) {  /* 栈满 */
         return ERROR;
     }
     S -> top++;			  /* 栈顶指针增加一 */
@@ -68,7 +69,7 @@ Status Pop(SqStack *S, SElemType *e) {
     if(S -> top == -1)            /* 栈空 */
         return ERROR;
     *e = S -> data[S -> top];	  /* 将要删除的栈顶元素赋值给e */
-    S -> top--;				      /* 栈顶指针减一 */
+    S -> top--;                   /* 栈顶指针减一 */
     return OK;
 }
 
@@ -83,7 +84,6 @@ Status StackTraverse(SqStack S) {
     return OK;
 }
 
-
 int main() {
     int j;
     SqStack s;
@@ -97,9 +97,16 @@ int main() {
     printf("弹出的栈顶元素 e = %d\n", e);
     printf("栈空否：%d(1:空 0:否)\n", StackEmpty(s));
     GetTop(s, &e);
-    printf("栈顶元素 e = %d 栈的长度为%d\n", e, StackLength(s));
+    printf("栈顶元素 e = %d 栈的长度为 %d\n", e, StackLength(s));
     ClearStack(&s);
     printf("清空栈后，栈空否：%d(1:空 0:否)\n", StackEmpty(s));
-	return 0;
-}
+    return 0;
 
+    /*
+        栈中元素依次为：1 2 3 4 5 6 7 8 9 10
+        弹出的栈顶元素 e = 10
+        栈空否：0(1:空 0:否)
+        栈顶元素 e = 9 栈的长度为 9
+        清空栈后，栈空否：1(1:空 0:否)
+    */
+}
