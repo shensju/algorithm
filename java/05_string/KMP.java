@@ -28,6 +28,28 @@ public class KMP {
         }
         return next;
     }
+	
+	/**
+     *
+     * @param str
+     * @return
+     */
+    public static int[] getNextval(String str) {
+        // i表示后缀的单个字符的索引值，j表示前缀的单个字符的索引值
+        int i = 0, j = -1;
+        // 创建一个字符串长度的nextval数组
+        int[] nextval = new int[str.length()];
+        nextval[0] = 0;
+        while (i < str.length() - 1) {
+            if (j == -1) {
+                i++;
+                j = 1;
+
+            } else  if (str.charAt(i) == str.charAt(j)) {
+
+            }
+        }
+    }
 
     /**
      * 返回子串在主串中第pos个字符后的索引位置
