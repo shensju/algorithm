@@ -103,3 +103,52 @@ int BiTreeDepth(BiTree T) {
         j = 0;
     return i > j ? i + 1 : j + 1;
 }
+
+/* 初始条件: 二叉树T存在。操作结果: 返回T的根 */
+TElemType Root(BiTree T) {
+    if (BiTreeEmpty(T))
+        return Nil;
+    else
+        return T -> data;
+}
+
+/* 初始条件: 二叉树T存在，p指向T中某个结点 */
+/* 操作结果: 返回p所指结点的值 */
+TElemType Value(BiTree p) {
+    return p -> data;
+}
+
+/* 给p所指结点赋值为value */
+void Assign(BiTree p,TElemType value) {
+    p -> data = value;
+}
+
+/* 初始条件: 二叉树T存在 */
+/* 操作结果: 前序递归遍历T */
+void PreOrderTraverse(BiTree T) {
+    if (T == NULL)
+        return;
+    printf("%c", T -> data);
+    PreOrderTraverse(T -> lchild);
+    PreOrderTraverse(T -> rchild);
+}
+
+/* 初始条件: 二叉树T存在 */
+/* 操作结果: 中序递归遍历T */
+void InOrderTraverse(BiTree T) {
+    if (T == NULL)
+        return;
+    InOrderTraverse(T -> lchild);
+    printf("%c", T -> data);
+    InOrderTraverse(T -> rchild);
+}
+
+/* 初始条件: 二叉树T存在 */
+/* 操作结果: 后序递归遍历T */
+void PostOrderTraverse(BiTree T) {
+    if (T == NULL)
+        return;
+    PostOrderTraverse(T -> lchild);
+    PostOrderTraverse(T -> rchild);
+    printf("%c", T -> data);
+}
