@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define OK 1
 #define ERROR 0
@@ -20,7 +21,7 @@ Status StrAssign(String T, char *chars) {
     int i;
     if(strlen(chars) > MAXSIZE)
         return ERROR;
-    else { 
+    else {
         T[0] = strlen(chars);
         for(i = 1; i <= T[0]; i++)
             T[i] = *(chars + i - 1);
@@ -36,7 +37,6 @@ typedef struct BiTNode {                /* 结点结构 */
     TElemType data;                     /* 结点数据 */ 
     struct BiTNode *lchild, *rchild;    /* 左右孩子指针 */
 }BiTNode, *BiTree;
-
 
 Status visit(TElemType e) {
     printf("%c ", e);
@@ -60,7 +60,7 @@ void CreateBiTree(BiTree *T) {
     else {
         *T = (BiTree) malloc (sizeof(BiTNode));
         if (!*T)
-            exit(OVERFLOW);
+            exit(-1);
         (*T) -> data = ch;  /* 生成根结点 */
         CreateBiTree(&(*T) -> lchild);  /* 构造左子树 */
         CreateBiTree(&(*T) -> rchild);  /* 构造右子树 */
@@ -119,7 +119,7 @@ TElemType Value(BiTree p) {
 }
 
 /* 给p所指结点赋值为value */
-void Assign(BiTree p,TElemType value) {
+void Assign(BiTree p, TElemType value) {
     p -> data = value;
 }
 
@@ -151,4 +151,45 @@ void PostOrderTraverse(BiTree T) {
     PostOrderTraverse(T -> lchild);
     PostOrderTraverse(T -> rchild);
     printf("%c", T -> data);
+}
+
+int main() {
+    int i;
+    BiTree T;
+    TElemType e;
+    InitBiTree(&T);
+
+    StrAssign(str, "ABDH#K###E##CFI###G#J##");
+
+    CreateBiTree(&T);
+
+    printf("构造空二叉树后，树空否？ %d (1:是 0:否) 树的深度 = %d\n", BiTreeEmpty(T), BiTreeDepth(T));
+    e = Root(T);
+    printf("二叉树的根为: %c\n", e);
+
+    printf("\n前序遍历二叉树:");
+    PreOrderTraverse(T);
+    printf("\n中序遍历二叉树:");
+    InOrderTraverse(T);
+    printf("\n后序遍历二叉树:");
+    PostOrderTraverse(T);
+	
+    DestroyBiTree(&T);
+    printf("\n\n清除二叉树后，树空否？ %d (1:是 0:否) 树的深度 = %d\n", BiTreeEmpty(T), BiTreeDepth(T));
+    i = Root(T);
+    if(!i)
+        printf("树空，无根\n");
+	
+    return 0;
+    
+    /*
+        构造空二叉树后，树空否？ 0 (1:是 0:否) 树的深度 = 5
+        二叉树的根为: A
+
+        前序遍历二叉树:ABDHKECFIGJ
+        中序遍历二叉树:HKDBEAIFCGJ
+        后序遍历二叉树:KHDEBIFJGCA
+
+        清除二叉树后，树空否？ 1 (1:是 0:否) 树的深度 = 0
+    */
 }
