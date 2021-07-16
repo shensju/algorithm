@@ -2,10 +2,10 @@ package com.shensju.learn.binarytree;
 
 /**
  * @Author: shensju
- * @Date: 2021/7/15 23:23
- * 二叉树的最大深度
+ * @Date: 2021/7/16 20:27
+ * 路径总和
  */
-public class MaxDepth {
+public class HasPathSum {
 
     /** Definition for a binary tree node **/
     public class TreeNode {
@@ -33,15 +33,17 @@ public class MaxDepth {
      * 时间复杂度：O(n)
      * 空间复杂度：O(n)
      * @param root
+     * @param targetSum
      * @return
      */
-    public int maxDepth(TreeNode root) {
+    public boolean hasPathSum(TreeNode root, int targetSum) {
         if (root == null) {
-            return 0;
+            return false;
         }
-        int leftDepth = maxDepth(root.left);
-        int rightDepth = maxDepth(root.right);
-        return leftDepth > rightDepth ? leftDepth + 1 : rightDepth + 1;
+        if (root.left == null && root.right == null) {
+            return root.val == targetSum;
+        }
+        return hasPathSum(root.left, targetSum - root.val) || hasPathSum(root.right, targetSum - root.val);
     }
 
 }
