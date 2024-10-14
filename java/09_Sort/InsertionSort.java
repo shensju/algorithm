@@ -15,7 +15,7 @@ public class InsertionSort {
     public static void main(String[] args) {
         int[] a = {4, 5, 6, 1, 3, 2};
         System.out.println("初始数据：" + Arrays.toString(a));
-        insertionSort(a, 6);
+        insertionSort(a, a.length);
         System.out.println("经过插入排序后的数据：" + Arrays.toString(a));
     }
 
@@ -27,12 +27,12 @@ public class InsertionSort {
             // 查找插入的位置
             for (; j >= 0; j--) {
                 if (a[j] > value) {
-                    a[j+1] = a[j]; // 数据移动
+                    a[j + 1] = a[j]; // 数据移动
                 } else {
                     break;
                 }
             }
-            a[j+1] = value; // 插入数据
+            a[j + 1] = value; // 插入数据
         }
     }
 }

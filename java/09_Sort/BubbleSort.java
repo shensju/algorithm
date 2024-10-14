@@ -15,7 +15,7 @@ public class BubbleSort {
     public static void main(String[] args) {
         int[] a = {3, 5, 4, 1, 2, 6};
         System.out.println("初始数据：" + Arrays.toString(a));
-        bubbleSort(a, 6);
+        bubbleSort(a, a.length);
         System.out.println("经过冒泡排序后的数据：" + Arrays.toString(a));
     }
 
@@ -24,10 +24,10 @@ public class BubbleSort {
         for (int i = 0; i < n; i++) {
             boolean flag = false; // 判断是否有数据交换
             for (int j = 0; j < n - i - 1; j++) {
-                if (a[j] > a[j+1]) {
+                if (a[j] > a[j + 1]) {
                     int tmp = a[j];
-                    a[j] = a[j+1];
-                    a[j+1] = tmp;
+                    a[j] = a[j + 1];
+                    a[j + 1] = tmp;
                     flag = true; // 表示有数据交换
                 }
             }
