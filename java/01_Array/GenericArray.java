@@ -1,27 +1,28 @@
-package com.shensju.array;
+package indi.shensju.array;
 
 /**
- * @Author: shensju
- * @Date: 2021/1/27 22:58
+ * @author shensju
+ * @date 2024/10/16 23:08
+ * 通用数组，支持泛型，支持动态扩容，包含增删改查基本操作
  */
-public class Array<E> {
+public class GenericArray<E> {
 
-    private E[] data;
+    private Object[] data;
     private int size;
 
     /**
      * 构造一个容量为capacity的数组
      * @param capacity
      */
-    public Array(int capacity) {
-        data = (E[]) new Object[capacity];
+    public GenericArray(int capacity) {
+        data = new Object[capacity];
         size = 0;
     }
 
     /**
      * 默认构造一个容量为10的数组
      */
-    public Array() {
+    public GenericArray() {
         this(10);
     }
 
@@ -89,7 +90,7 @@ public class Array<E> {
     public E get(int index) {
         if (index < 0 || index >= size)
             throw new IllegalArgumentException("Get failed. Index is illegal.");
-        return data[index];
+        return (E) data[index];
     }
 
     /**
@@ -137,7 +138,7 @@ public class Array<E> {
     public E remove(int index) {
         if (index < 0 || index >= size)
             throw new IllegalArgumentException("Remove failed. Index is illegal.");
-        E returnData = data[index];
+        E returnData = (E) data[index];
         for (int i = index + 1; i < size; i++)
             data[i - 1] = data[i];
         size--;
@@ -193,7 +194,7 @@ public class Array<E> {
      * @param newCapacity
      */
     private void resize(int newCapacity) {
-        E[] newData = (E[]) new Object[newCapacity];
+        Object[] newData = new Object[newCapacity];
         for (int i = 0; i < size; i++)
             newData[i] = data[i];
         data = newData;

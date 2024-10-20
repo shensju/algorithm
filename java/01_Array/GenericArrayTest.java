@@ -1,13 +1,12 @@
-package com.shensju.array;
+package indi.shensju.array;
 
 /**
- * @Author: shensju
- * @Date: 2021/1/27 22:50
+ * @author shensju
+ * @date 2024/10/19 11:43
  */
-public class Main {
-
+public class GenericArrayTest {
     public static void main(String[] args) {
-        Array<Integer> arr = new Array<>(); // 数组初始容量大小为10个元素
+        GenericArray<Integer> arr = new GenericArray<>(); // 数组初始容量大小为10个元素
         for (int i = 0; i < 10; i++)
             arr.addLast(i);
         System.out.println(arr);
@@ -28,4 +27,3 @@ public class Main {
         System.out.println(arr);
     }
 }
-
