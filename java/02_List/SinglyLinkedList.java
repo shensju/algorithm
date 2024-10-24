@@ -5,7 +5,7 @@ package indi.shensju.list;
  * @date 2024/10/21 22:33
  * 单向链表，支持泛型，包含增删改查基本操作
  */
-public class LinkedList<E> {
+public class SinglyLinkedList<E> {
     /**
      * 链表内部结点类
      */
@@ -35,7 +35,7 @@ public class LinkedList<E> {
     private Node<E> dummyHead; // 虚拟头结点
     private int size;
 
-    public LinkedList() {
+    public SinglyLinkedList() {
         dummyHead = new Node(null, null);
         size = 0;
     }
@@ -43,7 +43,7 @@ public class LinkedList<E> {
     /**
      * @return 链表中的元素个数
      */
-    public int getSize() {
+    public int size() {
         return size;
     }
 
@@ -142,6 +142,26 @@ public class LinkedList<E> {
         while (curr != null) {
             if (curr.item.equals(element))
                 return true;
+            curr = curr.next;
+        }
+        return false;
+    }
+
+    /**
+     * 删除值等于给定值的结点
+     * @param element
+     * @return
+     */
+    public boolean removeElement(E element) {
+        Node<E> curr = dummyHead;
+        while (curr.next != null) {
+            if (curr.next.item.equals(element)) {
+                Node<E> target = curr.next;
+                curr.next = target.next;
+                target.next = null;
+                size--;
+                return true;
+            }
             curr = curr.next;
         }
         return false;
