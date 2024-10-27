@@ -9,21 +9,13 @@ public class SinglyLinkedList<E> {
     /**
      * 链表内部结点类
      */
-    private class Node<E> {
-        public E item;
-        public Node<E> next;
+    private static class Node<E> {
+        private E item;
+        private Node<E> next;
 
         public Node(E element, Node<E> next) {
             this.item = element;
             this.next = next;
-        }
-
-        public Node(E element) {
-            this(element, null);
-        }
-
-        public Node() {
-            this(null, null);
         }
 
         @Override
@@ -33,7 +25,7 @@ public class SinglyLinkedList<E> {
     }
 
     private Node<E> dummyHead; // 虚拟头结点
-    private int size;
+    private int size; // 结点数
 
     public SinglyLinkedList() {
         dummyHead = new Node(null, null);
@@ -41,22 +33,30 @@ public class SinglyLinkedList<E> {
     }
 
     /**
-     * @return 链表中的元素个数
+     * @return 链表的结点数
      */
     public int size() {
         return size;
     }
 
     /**
-     * @return 判断链表是否为空，若为空返回true，否则返回false
+     * 判断链表是否为空链表
+     * @return 若为空返回true，否则返回false
      */
     public boolean isEmpty() {
         return size == 0;
     }
 
     /**
-     * 在链表的index（0-based）位置添加新的元素
-     * 在链表中不是一个常用的操作，练习用 : )
+     * 默认在链表尾部插入新结点
+     * @param element
+     */
+    public void add(E element) {
+        addLast(element);
+    }
+
+    /**
+     * 将新结点插入到链表索引为index[0, size]的位置
      * @param index
      * @param element
      */
@@ -71,7 +71,7 @@ public class SinglyLinkedList<E> {
     }
 
     /**
-     * 在链表头添加新的元素
+     * 向链表头部插入新结点
      * @param element
      */
     public void addFirst(E element) {
@@ -79,7 +79,7 @@ public class SinglyLinkedList<E> {
     }
 
     /**
-     * 在链表末尾添加新的元素
+     * 向链表尾部插入新结点
      * @param element
      */
     public void addLast(E element) {
@@ -87,8 +87,7 @@ public class SinglyLinkedList<E> {
     }
 
     /**
-     * 获得链表的第index（0-based）个位置的元素
-     * 在链表中不是一个常用的操作，练习用: )
+     * 获取链表索引为index[0,size)的结点元素
      * @param index
      * @return
      */
@@ -102,7 +101,7 @@ public class SinglyLinkedList<E> {
     }
 
     /**
-     * 获得链表的第一个元素
+     * 获取链表的头结点元素
      * @return
      */
     public E getFirst() {
@@ -110,7 +109,7 @@ public class SinglyLinkedList<E> {
     }
 
     /**
-     * 获得链表的最后一个元素
+     * 获取链表的尾结点元素
      * @return
      */
     public E getLast() {
@@ -118,58 +117,63 @@ public class SinglyLinkedList<E> {
     }
 
     /**
-     * 修改链表的第index（0-based）个位置的元素为element
-     * 在链表中不是一个常用的操作，练习用: )
+     * 判断链表中是否存在给定的元素
+     * @param element
+     * @return 若存在返回true，否则返回false
+     */
+    public boolean contains(E element) {
+        return find(element) != -1;
+    }
+
+    /**
+     * 查找链表中是否存在给定元素的结点
+     * @param element
+     * @return 若存在返回结点的索引位置，否则返回-1
+     */
+    public int find(E element) {
+        int index = 0;
+        if (element == null) {
+            for (Node<E> curr = dummyHead.next; curr != null; curr = curr.next) {
+                if (curr.item == null)
+                    return index;
+                index++;
+            }
+        } else {
+            for (Node<E> curr = dummyHead.next; curr != null; curr = curr.next) {
+                if (element.equals(curr.item))
+                    return index;
+                index++;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 修改链表索引为index[0,size)的结点元素，并返回修改前的元素
      * @param index
      * @param element
      */
-    public void set(int index, E element) {
+    public E set(int index, E element) {
         if (index < 0 || index >= size)
             throw new IllegalArgumentException("Set failed. Illegal index.");
         Node<E> curr = dummyHead.next;
         for (int i = 0; i < index; i++)
             curr = curr.next;
+        E oldVal = curr.item;
         curr.item = element;
+        return oldVal;
     }
 
     /**
-     * 查找链表中是否有元素element
-     * @param element
+     * 默认删除链表的头结点，并返回被删除的元素
      * @return
      */
-    public boolean contains(E element) {
-        Node<E> curr = dummyHead.next;
-        while (curr != null) {
-            if (curr.item.equals(element))
-                return true;
-            curr = curr.next;
-        }
-        return false;
+    public E remove() {
+        return removeFirst();
     }
 
     /**
-     * 删除值等于给定值的结点
-     * @param element
-     * @return
-     */
-    public boolean removeElement(E element) {
-        Node<E> curr = dummyHead;
-        while (curr.next != null) {
-            if (curr.next.item.equals(element)) {
-                Node<E> target = curr.next;
-                curr.next = target.next;
-                target.next = null;
-                size--;
-                return true;
-            }
-            curr = curr.next;
-        }
-        return false;
-    }
-
-    /**
-     * 从链表中删除index（0-based）位置的元素，返回被删除的元素
-     * 在链表中不是一个常用的操作，练习用: )
+     * 删除链表索引为index[0,size)的结点，并返回被删除的元素
      * @param index
      * @return
      */
@@ -177,9 +181,8 @@ public class SinglyLinkedList<E> {
         if (index < 0 || index >= size)
             throw new IllegalArgumentException("Remove failed. Illegal index.");
         Node<E> prev = dummyHead;
-        for (int i = 0; i < index; i++) {
+        for (int i = 0; i < index; i++)
             prev = prev.next;
-        }
         Node<E> retNode = prev.next;
         prev.next = retNode.next;
         retNode.next = null;
@@ -188,7 +191,7 @@ public class SinglyLinkedList<E> {
     }
 
     /**
-     * 从链表中删除第一个元素，返回被删除的元素
+     * 删除链表的头结点，并返回被删除的元素
      * @return
      */
     public E removeFirst() {
@@ -196,11 +199,59 @@ public class SinglyLinkedList<E> {
     }
 
     /**
-     * 从链表中删除最后一个元素，返回被删除的元素
+     * 删除链表的尾结点，并返回被删除的元素
      * @return
      */
     public E removeLast() {
         return remove(size - 1);
+    }
+
+    /**
+     * 删除链表中等于给定元素的结点，如有多个则删除第一个结点
+     * @param element
+     * @return
+     */
+    public boolean remove(E element) {
+        Node<E> curr = dummyHead;
+        if (element == null) {
+            while (curr.next != null) {
+                if (curr.next.item == null) {
+                    Node<E> target = curr.next;
+                    curr.next = target.next;
+                    target.next = null;
+                    size--;
+                    return true;
+                }
+                curr = curr.next;
+            }
+        } else {
+            while (curr.next != null) {
+                if (element.equals(curr.next.item)) {
+                    Node<E> target = curr.next;
+                    curr.next = target.next;
+                    target.next = null;
+                    size--;
+                    return true;
+                }
+                curr = curr.next;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 清空链表
+     */
+    public void clear() {
+        Node<E> curr = dummyHead.next;
+        while (curr != null) {
+            Node<E> next = curr.next;
+            curr.item = null;
+            curr.next = null;
+            curr = next;
+        }
+        dummyHead.next = null;
+        size = 0;
     }
 
     @Override

@@ -2,16 +2,16 @@ package indi.shensju.list;
 
 /**
  * @author shensju
- * @date 2024/10/24 22:53
+ * @date 2024/10/27 22:08
  */
-public class SinglyLinkedListTest {
+public class DoublyLinkedListTest {
     public static void main(String[] args) {
-        SinglyLinkedList<String> list = new SinglyLinkedList<>();
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
         System.out.println("size : " + list.size() + ", list : " + list);
         list.addFirst("Beijing");
         list.addLast("Shanghai");
-        list.addLast("Guangzhou");
-        list.addLast("Shenzhen");
+        list.add("Shenzhen");
+        list.add(2, "Guangzhou");
         System.out.println("size : " + list.size() + ", list : " + list);
         System.out.println("list.get(2) = " + list.get(2));
         list.add(2, "Hangzhou");

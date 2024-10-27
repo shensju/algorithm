@@ -7,7 +7,8 @@
 
 ## 链表 List
 
-- LinkedList 单向链表，支持泛型，包含增删改查基本操作
+- SinglyLinkedList 单向链表，支持泛型，包含增删改查基本操作
+- DoublyLinkedList 双向链表，支持泛型，包含增删改查基本操作
 
 ## 图 Graph
 
